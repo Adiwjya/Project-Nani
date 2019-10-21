@@ -1,123 +1,123 @@
-<script type="text/javascript"> 
-    
+<script type="text/javascript">
     var save_method; //for save method string
     var table;
-    
+
     $(document).ready(function() {
-        table = $('#tb').DataTable( {
+        table = $('#tb').DataTable({
             ajax: "<?php echo base_url(); ?>barang/ajax_list"
         });
-        
+
         $('.datepicker').datepicker({
             autoclose: true,
             format: "yyyy-mm-dd",
             todayHighlight: true,
             orientation: "top auto",
-            todayBtn: true 
+            todayBtn: true
         });
     });
-    
-    function reload(){
-        table.ajax.reload(null,false); //reload datatable ajax
+
+    function reload() {
+        table.ajax.reload(null, false); //reload datatable ajax
     }
-    
-    function add(){
+
+    function add() {
         save_method = 'add';
         $('#form')[0].reset(); // reset form on modals
         $('#modal_form').modal('show'); // show bootstrap modal
         $('.modal-title').text('Tambah Barang'); // Set Title to Bootstrap modal title
     }
-    
-    function save(){
+
+    function save() {
         $('#btnSave').text('Saving...'); //change button text
-        $('#btnSave').attr('disabled',true); //set button disable 
-        
+        $('#btnSave').attr('disabled', true); //set button disable 
+
         var url;
-        if(save_method === 'add') {
+        if (save_method === 'add') {
             url = "<?php echo base_url(); ?>barang/ajax_add";
         } else {
             url = "<?php echo base_url(); ?>barang/ajax_edit";
         }
-        
+
         // ajax adding data to database
         $.ajax({
-            url : url,
+            url: url,
             type: "POST",
             data: $('#form').serialize(),
             dataType: "JSON",
-            success: function(data)
-            {
+            success: function(data) {
                 alert(data.status);
                 $('#modal_form').modal('hide');
                 reload();
-                    
+
                 $('#btnSave').text('Save'); //change button text
-                $('#btnSave').attr('disabled',false); //set button enable 
+                $('#btnSave').attr('disabled', false); //set button enable 
             },
-            error: function (jqXHR, textStatus, errorThrown){
+            error: function(jqXHR, textStatus, errorThrown) {
                 alert("Error json " + errorThrown);
-                
+
                 $('#btnSave').text('Save'); //change button text
-                $('#btnSave').attr('disabled',false); //set button enable 
+                $('#btnSave').attr('disabled', false); //set button enable 
             }
         });
     }
-    
-    function hapus(id, nama){
-        if(confirm("Apakah anda yakin menghapus " + nama + " ?")){
+
+    function hapus(id, nama) {
+        if (confirm("Apakah anda yakin menghapus " + nama + " ?")) {
             // ajax delete data to database
             $.ajax({
-                url : "<?php echo base_url(); ?>barang/hapus/" + id,
+                url: "<?php echo base_url(); ?>barang/hapus/" + id,
                 type: "POST",
                 dataType: "JSON",
-                success: function(data){
+                success: function(data) {
                     alert(data.status);
                     reload();
-                },error: function (jqXHR, textStatus, errorThrown){
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
                     alert('Error hapus data');
                 }
             });
         }
     }
-    
-    function ganti(id){
+
+    function ganti(id) {
         save_method = 'update';
         $('#form')[0].reset(); // reset form on modals
         $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
         $('.modal-title').text('Ganti Barang'); // Set title to Bootstrap modal title
-        
+
         //Ajax Load data from ajax
         $.ajax({
-            url : "<?php echo base_url(); ?>barang/ganti/" + id,
+            url: "<?php echo base_url(); ?>barang/ganti/" + id,
             type: "GET",
             dataType: "JSON",
-            success: function(data){
+            success: function(data) {
                 $('[name="id"]').val(data.idbarang);
-                $('[name="nama_barang"]').val(data.nama_barang);
-                $('[name="ukuran"]').val(data.ukuran);
-                $('[name="barcode"]').val(data.barcode);
-                $('[name="kategori"]').val(data.idkategori);
+                $('[name="nama_barang"]').val(data.nama);
+                $('[name="kategori"]').val(data.kategori);
+                $('[name="satuan"]').val(data.satuan);
+                $('[name="merk"]').val(data.merk);
+                $('[name="saldo_awal"]').val(data.saldo_awal);
+                $('[name="saldo_akhir"]').val(data.saldo_akhir);
             },
-            error: function (jqXHR, textStatus, errorThrown){
+            error: function(jqXHR, textStatus, errorThrown) {
                 alert('Error get data');
             }
         });
     }
-    
 </script>
 <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
-      <div class="container-fluid">
-      </div><!-- /.container-fluid -->
+        <div class="container-fluid">
+        </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
 
     <!-- Main content -->
     <div class="content">
-      <div class="container-fluid">
-      <div class="row">
+        <div class="container-fluid">
+            <div class="row">
                 <div class="col-xl-12 col-lg-12 col-12">
                     <div class="card">
                         <div class="card-header">
@@ -147,12 +147,12 @@
                     </div>
                 </div>
             </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+</div>
+<!-- /.content-wrapper -->
 
 
 <!-- Modal -->
@@ -175,9 +175,33 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" style="text-align: right;">Ukuran</label>
+                        <label class="col-sm-3 col-form-label" style="text-align: right;">Kategori</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="ukuran" placeholder="Ukuran">
+                            <input type="text" class="form-control" name="kategori" placeholder="kategori">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" style="text-align: right;">Satuan</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="satuan" placeholder="Satuan">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" style="text-align: right;">Merk</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="merk" placeholder="Merk">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" style="text-align: right;">Saldo_awal</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="saldo_awal" placeholder="Saldo Awal">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" style="text-align: right;">Saldo_akhir</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="saldo_akhir" placeholder="Saldo Akhir">
                         </div>
                     </div>
                 </form>
