@@ -23,7 +23,7 @@
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-      <a href="<?php echo base_url(); ?>assets/index2.html"><b>Login</b>Page TEST</a>
+      <a href="<?php echo base_url(); ?>assets/index2.html"><b>Login</b>Page Gabutuh Asu</a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
