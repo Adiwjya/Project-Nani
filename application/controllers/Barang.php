@@ -48,6 +48,10 @@ class Barang extends CI_Controller
                 $val = array();
                 $val[] = $row->nama;
                 $val[] = $row->kategori;
+                $val[] = $row->satuan;
+                $val[] = $row->merk;
+                $val[] = $row->saldo_awal;
+                $val[] = $row->saldo_akhir;
                 // $val[] = $this->Mglobals->getAllQR("SELECT nama_kategori FROM kategori where idkategori = '".$row->idkategori."';")->nama_kategori;
                 $val[] = '<div style="text-align: center;">'
                     . '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="ganti(' . "'" . $row->idbarang . "'" . ')"><i class="ft-edit"></i> Edit</a>&nbsp;'
@@ -59,6 +63,29 @@ class Barang extends CI_Controller
             $output = array("data" => $data);
             echo json_encode($output);
         } else {
+            $this->modul->halaman('login');
+        }
+    }
+
+    public function ajax_kategori() {
+        if($this->session->userdata('logged_in')){
+            $data = array();
+            $list = $this->Mglobals->getAll("kategori");
+            foreach ($list->result() as $row) {
+                $val = array();
+                $val[] = $row->kode_kategori;
+                $val[] = $row->nama;
+                // $val[] = $this->Mglobals->getAllQR("SELECT nama_kategori FROM kategori where idkategori = '".$row->idkategori."';")->nama_kategori;
+                $val[] = '<div style="text-align: center;">'
+                        . '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="ganti_kat('."'".$row->kode_kategori."'".')"><i class="ft-edit"></i> Edit</a>&nbsp;'
+                        . '<a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="hapus_kat('."'".$row->kode_kategori."'".','."'".$row->nama."'".')"><i class="ft-delete"></i> Delete</a>'
+                        . '</div>';
+
+                $data[] = $val;
+            }
+            $output = array("data" => $data);
+            echo json_encode($output);
+        }else{
             $this->modul->halaman('login');
         }
     }

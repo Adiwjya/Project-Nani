@@ -66,7 +66,7 @@ class Kategori extends CI_Controller{
             }else{
                 $data = array(
                     'kode_kategori' => $this->modul->autokode1('KT','kode_kategori','kategori','3','7'),
-                    'nama' => $this->input->post('nama'),
+                    'nama' => $this->input->post('nama_kat'),
                 );
                 $simpan = $this->Mglobals->add("kategori",$data);
                 if($simpan == 1){
@@ -94,9 +94,9 @@ class Kategori extends CI_Controller{
     public function ajax_edit() {
         if($this->session->userdata('logged_in')){
             $data = array(
-                    'nama' => $this->input->post('nama')
+                    'nama' => $this->input->post('nama_kat')
             );
-            $condition['kode_kategori'] = $this->input->post('id');
+            $condition['kode_kategori'] = $this->input->post('id_kat');
             $update = $this->Mglobals->update("kategori",$data, $condition);
             if($update == 1){
                 $status = "Data terupdate";
@@ -104,6 +104,8 @@ class Kategori extends CI_Controller{
                 $status = "Data gagal terupdate";
             }
             echo json_encode(array("status" => $status));
+
+            // echo $data;
         }else{
             $this->modul->halaman('login');
         }
