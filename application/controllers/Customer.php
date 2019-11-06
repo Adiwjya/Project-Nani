@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Barang
+ * Description of Customer
  *
  * @author Adiw.io
  */

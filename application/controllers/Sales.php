@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Barang
+ * Description of Sales
  *
  * @author Adiw.io
  */

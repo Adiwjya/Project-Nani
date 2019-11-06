@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Barang
+ * Description of Supplier
  *
  * @author Adiw.io
  */

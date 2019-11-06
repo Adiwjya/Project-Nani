@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2019 at 02:18 PM
+-- Generation Time: Nov 06, 2019 at 11:37 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `barang` (
-  `idbarang` varchar(10) NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  `kategori` varchar(50) NOT NULL,
+  `idbarang` varchar(10) CHARACTER SET utf8mb4 NOT NULL,
+  `nama` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+  `kategori` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
   `satuan` varchar(10) NOT NULL,
   `merk` varchar(50) NOT NULL,
   `saldo_awal` float NOT NULL,
@@ -43,8 +43,7 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`idbarang`, `nama`, `kategori`, `satuan`, `merk`, `saldo_awal`, `saldo_akhir`) VALUES
-('B00001', 'Baygon', 'sg', 'hg', 'jhgh', 0, 0),
-('B00002', 'Adiw', 'asdasd', 'asd', 'asdasd', 1000, 10000);
+('B00001', 'asdsad', '224', 'sfsf', 'ssad', 12000, 12000);
 
 -- --------------------------------------------------------
 
@@ -62,13 +61,6 @@ CREATE TABLE `customer` (
   `no_fax` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `customer`
---
-
-INSERT INTO `customer` (`kode_customer`, `nama`, `alamat`, `kode_kota`, `kode_wilayah`, `no_tlp`, `no_fax`) VALUES
-('C00001', 'adiw', 'apa aja', '123', '123', '123', '123');
-
 -- --------------------------------------------------------
 
 --
@@ -85,7 +77,8 @@ CREATE TABLE `kategori` (
 --
 
 INSERT INTO `kategori` (`kode_kategori`, `nama`) VALUES
-('KT0001', 'sjkdfgj');
+('KT0001', 'sjkdfgj'),
+('KT0002', 'Aasd');
 
 -- --------------------------------------------------------
 
@@ -98,12 +91,80 @@ CREATE TABLE `kota` (
   `nama` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `kota`
+-- Table structure for table `pembelian`
 --
 
-INSERT INTO `kota` (`kode_kota`, `nama`) VALUES
-('K00001', 'iqwyue');
+CREATE TABLE `pembelian` (
+  `idpb` varchar(10) NOT NULL,
+  `tanggal` date NOT NULL,
+  `kota` varchar(50) NOT NULL,
+  `wilayah` varchar(50) NOT NULL,
+  `alamat` text NOT NULL,
+  `keterangan` text NOT NULL,
+  `subtotal` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pembelian`
+--
+
+INSERT INTO `pembelian` (`idpb`, `tanggal`, `kota`, `wilayah`, `alamat`, `keterangan`, `subtotal`) VALUES
+('M00001', '2019-11-06', 'asd', 'asd', 'asd', 'sada', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pembelian_detail`
+--
+
+CREATE TABLE `pembelian_detail` (
+  `idpb_detail` varchar(10) NOT NULL,
+  `kode_barang` varchar(10) NOT NULL,
+  `harga` float NOT NULL,
+  `jumlah` float NOT NULL,
+  `idpb` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pembelian_detail`
+--
+
+INSERT INTO `pembelian_detail` (`idpb_detail`, `kode_barang`, `harga`, `jumlah`, `idpb`) VALUES
+('D000001', 'B00001', 12000, 2, 'M00001');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `penjualan`
+--
+
+CREATE TABLE `penjualan` (
+  `idpj` varchar(10) NOT NULL,
+  `tanggal` date NOT NULL,
+  `sales` varchar(50) NOT NULL,
+  `customer` varchar(50) NOT NULL,
+  `kota` varchar(50) NOT NULL,
+  `wilayah` varchar(50) NOT NULL,
+  `alamat` text NOT NULL,
+  `subtotal` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `penjualan_detail`
+--
+
+CREATE TABLE `penjualan_detail` (
+  `idpj_detail` varchar(10) NOT NULL,
+  `kode_barang` varchar(10) NOT NULL,
+  `harga` float NOT NULL,
+  `jumlah` float NOT NULL,
+  `idpj` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -118,15 +179,6 @@ CREATE TABLE `sales` (
   `kode_kota` varchar(10) NOT NULL,
   `no_tlp` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `sales`
---
-
-INSERT INTO `sales` (`kode_sales`, `nama_sales`, `alamat`, `kode_kota`, `no_tlp`) VALUES
-('SA0001', 'asdsad', 'dfdsf', '123', '223123'),
-('SA0002', 'hnkjhk', '23123', 'ksdjfjkd', 'jkdshfjkd'),
-('SA0003', 'iewr', 'ejhfk', '123', 'sddsf');
 
 -- --------------------------------------------------------
 
@@ -143,13 +195,6 @@ CREATE TABLE `supplier1` (
   `no_tlp` varchar(12) NOT NULL,
   `no_fax` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `supplier1`
---
-
-INSERT INTO `supplier1` (`kode_supplier`, `nama`, `alamat`, `kode_kota`, `kode_wilayah`, `no_tlp`, `no_fax`) VALUES
-('S0001', 'enrico', 'mojosari', 'SM001', 'SMM001', '918273987', '91823791123');
 
 -- --------------------------------------------------------
 
@@ -200,13 +245,16 @@ INSERT INTO `wilayah` (`kode_wilayah`, `nama`) VALUES
 -- Indexes for table `barang`
 --
 ALTER TABLE `barang`
-  ADD PRIMARY KEY (`idbarang`);
+  ADD PRIMARY KEY (`idbarang`),
+  ADD KEY `FK_kode_kategori_kategori` (`kategori`);
 
 --
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`kode_customer`);
+  ADD PRIMARY KEY (`kode_customer`),
+  ADD KEY `FK_kode_kota_kota` (`kode_kota`),
+  ADD KEY `FK_kode_wilayah_wilayah` (`kode_wilayah`);
 
 --
 -- Indexes for table `kategori`
@@ -221,16 +269,47 @@ ALTER TABLE `kota`
   ADD PRIMARY KEY (`kode_kota`);
 
 --
+-- Indexes for table `pembelian`
+--
+ALTER TABLE `pembelian`
+  ADD PRIMARY KEY (`idpb`);
+
+--
+-- Indexes for table `pembelian_detail`
+--
+ALTER TABLE `pembelian_detail`
+  ADD PRIMARY KEY (`idpb_detail`),
+  ADD KEY `FK_idpb_pembelian` (`idpb`),
+  ADD KEY `FK_kode_barang_barang` (`kode_barang`);
+
+--
+-- Indexes for table `penjualan`
+--
+ALTER TABLE `penjualan`
+  ADD PRIMARY KEY (`idpj`);
+
+--
+-- Indexes for table `penjualan_detail`
+--
+ALTER TABLE `penjualan_detail`
+  ADD PRIMARY KEY (`idpj_detail`),
+  ADD KEY `FK_kode_barang2_barang` (`kode_barang`),
+  ADD KEY `FK_idpj_penjualan` (`idpj`);
+
+--
 -- Indexes for table `sales`
 --
 ALTER TABLE `sales`
-  ADD PRIMARY KEY (`kode_sales`);
+  ADD PRIMARY KEY (`kode_sales`),
+  ADD KEY `FK_kode_kota2_kota` (`kode_kota`);
 
 --
 -- Indexes for table `supplier1`
 --
 ALTER TABLE `supplier1`
-  ADD PRIMARY KEY (`kode_supplier`);
+  ADD PRIMARY KEY (`kode_supplier`),
+  ADD KEY `FK_kode_kota3_kota` (`kode_kota`),
+  ADD KEY `FK_kode_wilayah2_wilayah` (`kode_wilayah`);
 
 --
 -- Indexes for table `userconfig`
@@ -243,6 +322,44 @@ ALTER TABLE `userconfig`
 --
 ALTER TABLE `wilayah`
   ADD PRIMARY KEY (`kode_wilayah`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `customer`
+--
+ALTER TABLE `customer`
+  ADD CONSTRAINT `FK_kode_kota_kota` FOREIGN KEY (`kode_kota`) REFERENCES `kota` (`kode_kota`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_kode_wilayah_wilayah` FOREIGN KEY (`kode_wilayah`) REFERENCES `wilayah` (`kode_wilayah`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `pembelian_detail`
+--
+ALTER TABLE `pembelian_detail`
+  ADD CONSTRAINT `FK_idpb_pembelian` FOREIGN KEY (`idpb`) REFERENCES `pembelian` (`idpb`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_kode_barang_barang` FOREIGN KEY (`kode_barang`) REFERENCES `barang` (`idbarang`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `penjualan_detail`
+--
+ALTER TABLE `penjualan_detail`
+  ADD CONSTRAINT `FK_idpj_penjualan` FOREIGN KEY (`idpj`) REFERENCES `penjualan` (`idpj`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_kode_barang2_barang` FOREIGN KEY (`kode_barang`) REFERENCES `barang` (`idbarang`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sales`
+--
+ALTER TABLE `sales`
+  ADD CONSTRAINT `FK_kode_kota2_kota` FOREIGN KEY (`kode_kota`) REFERENCES `kota` (`kode_kota`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `supplier1`
+--
+ALTER TABLE `supplier1`
+  ADD CONSTRAINT `FK_kode_kota3_kota` FOREIGN KEY (`kode_kota`) REFERENCES `kota` (`kode_kota`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_kode_wilayah2_wilayah` FOREIGN KEY (`kode_wilayah`) REFERENCES `wilayah` (`kode_wilayah`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

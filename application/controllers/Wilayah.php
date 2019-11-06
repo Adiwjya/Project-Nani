@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Barang
+ * Description of Wilayah
  *
  * @author Adiw.io
  */

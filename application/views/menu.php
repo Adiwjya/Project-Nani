@@ -75,6 +75,27 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link ">
+              <p>
+                Transaksi
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?php echo base_url(); ?>pembelian" class="nav-link">
+                  <p>Pembelian</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url(); ?>penjualan" class="nav-link">
+                  <p>Penjualan</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
           
           <li class="nav-header">Actions</li>
           <li class="nav-item">

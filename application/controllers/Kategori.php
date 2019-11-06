@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Barang
+ * Description of Kategori
  *
  * @author Adiw.io
  */

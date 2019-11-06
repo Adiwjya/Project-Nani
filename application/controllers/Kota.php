@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Barang
+ * Description of Kota
  *
  * @author Adiw.io
  */
