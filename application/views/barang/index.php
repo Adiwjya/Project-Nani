@@ -292,7 +292,15 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label" style="text-align: right;">Kategori</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="kategori" placeholder="kategori">
+                            <select class="form-control" id="kategori" name="kategori" onchange="getkode();">
+                                <?php
+                                foreach ($kategori->result() as $row) {
+                                    ?>
+                                <option value="<?php echo $row->kode_kategori; ?>"><?php echo $row->nama; ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">

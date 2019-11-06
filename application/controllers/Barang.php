@@ -28,7 +28,7 @@ class Barang extends CI_Controller
             $data['email'] = $session_data['email'];
             $data['akses'] = $session_data['akses'];
             $data['nama'] = $session_data['nama'];
-            // $data['kategori'] = $this->Mglobals->getAll("kategori");
+            $data['kategori'] = $this->Mglobals->getAll("kategori");
 
             $this->load->view('head', $data);
             $this->load->view('menu');
@@ -47,12 +47,12 @@ class Barang extends CI_Controller
             foreach ($list->result() as $row) {
                 $val = array();
                 $val[] = $row->nama;
-                $val[] = $row->kategori;
+                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM kategori where kode_kategori = '".$row->kategori."';")->nama;
                 $val[] = $row->satuan;
                 $val[] = $row->merk;
                 $val[] = $row->saldo_awal;
                 $val[] = $row->saldo_akhir;
-                // $val[] = $this->Mglobals->getAllQR("SELECT nama_kategori FROM kategori where idkategori = '".$row->idkategori."';")->nama_kategori;
+    
                 $val[] = '<div style="text-align: center;">'
                     . '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="ganti(' . "'" . $row->idbarang . "'" . ')"><i class="ft-edit"></i> Edit</a>&nbsp;'
                     . '<a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="hapus(' . "'" . $row->idbarang . "'" . ',' . "'" . $row->nama . "'" . ')"><i class="ft-delete"></i> Delete</a>'
@@ -169,4 +169,5 @@ class Barang extends CI_Controller
             $this->modul->halaman('login');
         }
     }
+    
 }

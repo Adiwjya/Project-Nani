@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2019 at 11:37 AM
+-- Generation Time: Nov 06, 2019 at 12:26 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -43,7 +43,7 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`idbarang`, `nama`, `kategori`, `satuan`, `merk`, `saldo_awal`, `saldo_akhir`) VALUES
-('B00001', 'asdsad', '224', 'sfsf', 'ssad', 12000, 12000);
+('B00001', 'asd', 'KT0002', 'asdasd', 'wqeqwe', 10000, 100000);
 
 -- --------------------------------------------------------
 
@@ -112,7 +112,7 @@ CREATE TABLE `pembelian` (
 --
 
 INSERT INTO `pembelian` (`idpb`, `tanggal`, `kota`, `wilayah`, `alamat`, `keterangan`, `subtotal`) VALUES
-('M00001', '2019-11-06', 'asd', 'asd', 'asd', 'sada', 0);
+('M00001', '2019-11-06', 'asdsad', 'sadasd', 'asdasd', 'asdasd', 0);
 
 -- --------------------------------------------------------
 
@@ -133,7 +133,7 @@ CREATE TABLE `pembelian_detail` (
 --
 
 INSERT INTO `pembelian_detail` (`idpb_detail`, `kode_barang`, `harga`, `jumlah`, `idpb`) VALUES
-('D000001', 'B00001', 12000, 2, 'M00001');
+('D000001', 'B00001', 10000, 2, 'M00001');
 
 -- --------------------------------------------------------
 
@@ -326,6 +326,12 @@ ALTER TABLE `wilayah`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `barang`
+--
+ALTER TABLE `barang`
+  ADD CONSTRAINT `FK_kategori_kat` FOREIGN KEY (`kategori`) REFERENCES `kategori` (`kode_kategori`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `customer`
