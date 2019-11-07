@@ -25,7 +25,7 @@ class Sales extends CI_Controller{
             $data['email'] = $session_data['email'];
             $data['akses'] = $session_data['akses'];
             $data['nama'] = $session_data['nama'];
-            // $data['kategori'] = $this->Mglobals->getAll("kategori");
+            $data['kota'] = $this->Mglobals->getAll("kota");
             
             $this->load->view('head', $data);
             $this->load->view('menu');
@@ -44,7 +44,7 @@ class Sales extends CI_Controller{
                 $val = array();
                 $val[] = $row->nama_sales;
                 $val[] = $row->alamat;
-                $val[] = $row->kode_kota;
+                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM kota where kode_kota = '".$row->kode_kota."';")->nama;
                 $val[] = $row->no_tlp;
                 // $val[] = $this->Mglobals->getAllQR("SELECT nama_kategori FROM kategori where idkategori = '".$row->idkategori."';")->nama_kategori;
                 $val[] = '<div style="text-align: center;">'

@@ -25,7 +25,9 @@ class Customer extends CI_Controller{
             $data['email'] = $session_data['email'];
             $data['akses'] = $session_data['akses'];
             $data['nama'] = $session_data['nama'];
-            // $data['kategori'] = $this->Mglobals->getAll("kategori");
+            $data['kota'] = $this->Mglobals->getAll("kota");
+            $data['wilayah'] = $this->Mglobals->getAll("wilayah");
+            
             
             $this->load->view('head', $data);
             $this->load->view('menu');
@@ -44,8 +46,8 @@ class Customer extends CI_Controller{
                 $val = array();
                 $val[] = $row->nama;
                 $val[] = $row->alamat;
-                $val[] = $row->kode_kota;
-                $val[] = $row->kode_wilayah;
+                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM kota where kode_kota = '".$row->kode_kota."';")->nama;
+                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM wilayah where kode_wilayah = '".$row->kode_wilayah."';")->nama;
                 $val[] = $row->no_tlp;
                 $val[] = $row->no_fax;
                 // $val[] = $this->Mglobals->getAllQR("SELECT nama_kategori FROM kategori where idkategori = '".$row->idkategori."';")->nama_kategori;
@@ -73,7 +75,7 @@ class Customer extends CI_Controller{
                     'kode_customer' => $this->modul->autokode1('C','kode_customer','customer','2','7'),
                     'nama' => $this->input->post('nama_customer'),
                     'alamat' => $this->input->post('alamat'),
-                    'kode_kota' => $this->input->post('kode_kota'),
+                    'kode_kota' => $this->input->post('kota'),
                     'kode_wilayah' => $this->input->post('kode_wilayah'),
                     'no_tlp' => $this->input->post('no_tlp'),
                     'no_fax' => $this->input->post('no_fax')

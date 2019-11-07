@@ -25,7 +25,8 @@ class Supplier extends CI_Controller{
             $data['email'] = $session_data['email'];
             $data['akses'] = $session_data['akses'];
             $data['nama'] = $session_data['nama'];
-            // $data['kategori'] = $this->Mglobals->getAll("kategori");
+            $data['kota'] = $this->Mglobals->getAll("kota");
+            $data['wilayah'] = $this->Mglobals->getAll("wilayah");
             
             $this->load->view('head', $data);
             $this->load->view('menu');
@@ -44,8 +45,8 @@ class Supplier extends CI_Controller{
                 $val = array();
                 $val[] = $row->nama;
                 $val[] = $row->alamat;
-                $val[] = $row->kode_kota;
-                $val[] = $row->kode_wilayah;
+                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM kota where kode_kota = '".$row->kode_kota."';")->nama;
+                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM wilayah where kode_wilayah = '".$row->kode_wilayah."';")->nama;
                 $val[] = $row->no_tlp;
                 $val[] = $row->no_fax;
                 // $val[] = $this->Mglobals->getAllQR("SELECT nama_kategori FROM kategori where idkategori = '".$row->idkategori."';")->nama_kategori;
