@@ -45,32 +45,22 @@
               </li>
               <li class="nav-item">
               <a href="<?php echo base_url(); ?>customer" class="nav-link">
-                  <p>customer</p>
+                  <p>Customer</p>
                 </a>
               </li>
               <li class="nav-item">
               <a href="<?php echo base_url(); ?>sales" class="nav-link">
-                  <p>sales</p>
+                  <p>Sales</p>
                 </a>
               </li>
               <li class="nav-item">
               <a href="<?php echo base_url(); ?>wilayah" class="nav-link">
-                  <p>wilayah</p>
+                  <p>Wilayah</p>
                 </a>
               </li>
               <li class="nav-item">
               <a href="<?php echo base_url(); ?>kota" class="nav-link">
-                  <p>kota</p>
-                </a>
-              </li>
-              <li class="nav-item">
-              <a href="<?php echo base_url(); ?>kategori" class="nav-link">
-                  <p>kategori</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <p>Menu 3</p>
+                  <p>Kota</p>
                 </a>
               </li>
             </ul>
@@ -109,7 +99,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="<?php echo base_url(); ?>home/"  class="nav-link">
+            <a href="<?php echo base_url(); ?>home/logout"  class="nav-link">
               <p>Logout</p>
             </a>
           </li>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2019 at 12:26 PM
+-- Generation Time: Dec 01, 2019 at 01:15 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -43,7 +43,9 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`idbarang`, `nama`, `kategori`, `satuan`, `merk`, `saldo_awal`, `saldo_akhir`) VALUES
-('B00001', 'asd', 'KT0002', 'asdasd', 'wqeqwe', 10000, 100000);
+('B00001', 'Kursi', 'KT0001', 'pcs', 'merk 1', 1000, 2000),
+('B00002', 'Meja Plastik', 'KT0004', 'pcs', 'merk 2', 2000, 2000),
+('B00003', 'Sapu Plastik', 'KT0002', 'pcs', 'merk 1', 1300, 1300);
 
 -- --------------------------------------------------------
 
@@ -61,6 +63,14 @@ CREATE TABLE `customer` (
   `no_fax` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`kode_customer`, `nama`, `alamat`, `kode_kota`, `kode_wilayah`, `no_tlp`, `no_fax`) VALUES
+('C00001', 'Viktor', '', 'K00007', 'W00003', '', ''),
+('C00002', 'Andre', '', 'K00003', 'W00001', '', '');
+
 -- --------------------------------------------------------
 
 --
@@ -77,8 +87,10 @@ CREATE TABLE `kategori` (
 --
 
 INSERT INTO `kategori` (`kode_kategori`, `nama`) VALUES
-('KT0001', 'sjkdfgj'),
-('KT0002', 'Aasd');
+('KT0001', 'Kategori 1'),
+('KT0002', 'Kategori 2'),
+('KT0003', 'Kategori 3'),
+('KT0004', 'Kategori 4');
 
 -- --------------------------------------------------------
 
@@ -90,6 +102,19 @@ CREATE TABLE `kota` (
   `kode_kota` varchar(10) NOT NULL,
   `nama` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `kota`
+--
+
+INSERT INTO `kota` (`kode_kota`, `nama`) VALUES
+('K00001', 'Surabaya'),
+('K00002', 'Malang'),
+('K00003', 'Jakarta'),
+('K00004', 'Denpasar'),
+('K00005', 'Medan'),
+('K00006', 'Gersik'),
+('K00007', 'Sidoarjo');
 
 -- --------------------------------------------------------
 
@@ -112,7 +137,7 @@ CREATE TABLE `pembelian` (
 --
 
 INSERT INTO `pembelian` (`idpb`, `tanggal`, `kota`, `wilayah`, `alamat`, `keterangan`, `subtotal`) VALUES
-('M00001', '2019-11-06', 'asdsad', 'sadasd', 'asdasd', 'asdasd', 0);
+('M00001', '2019-12-01', 'Surabaya', 'Jawa Timur', 'Jl. Semampir Tengah VIIIA', 'Ditunggu secepatnya', 0);
 
 -- --------------------------------------------------------
 
@@ -133,7 +158,8 @@ CREATE TABLE `pembelian_detail` (
 --
 
 INSERT INTO `pembelian_detail` (`idpb_detail`, `kode_barang`, `harga`, `jumlah`, `idpb`) VALUES
-('D000001', 'B00001', 10000, 2, 'M00001');
+('D000001', 'B00001', 1000, 2, 'M00001'),
+('D000002', 'B00003', 1300, 1, 'M00001');
 
 -- --------------------------------------------------------
 
@@ -152,6 +178,13 @@ CREATE TABLE `penjualan` (
   `subtotal` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `penjualan`
+--
+
+INSERT INTO `penjualan` (`idpj`, `tanggal`, `sales`, `customer`, `kota`, `wilayah`, `alamat`, `subtotal`) VALUES
+('U00001', '2019-12-01', 'enrico', 'adiw', 'Surabaya', 'Jawa Timur ', 'Jl. Kedung Baruk ', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -166,6 +199,13 @@ CREATE TABLE `penjualan_detail` (
   `idpj` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `penjualan_detail`
+--
+
+INSERT INTO `penjualan_detail` (`idpj_detail`, `kode_barang`, `harga`, `jumlah`, `idpj`) VALUES
+('D000001', 'B00001', 1000, 1, 'U00001');
+
 -- --------------------------------------------------------
 
 --
@@ -179,6 +219,13 @@ CREATE TABLE `sales` (
   `kode_kota` varchar(10) NOT NULL,
   `no_tlp` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`kode_sales`, `nama_sales`, `alamat`, `kode_kota`, `no_tlp`) VALUES
+('SA0001', 'Enrico ', '', 'K00001', '089777666555');
 
 -- --------------------------------------------------------
 
@@ -195,6 +242,13 @@ CREATE TABLE `supplier1` (
   `no_tlp` varchar(12) NOT NULL,
   `no_fax` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `supplier1`
+--
+
+INSERT INTO `supplier1` (`kode_supplier`, `nama`, `alamat`, `kode_kota`, `kode_wilayah`, `no_tlp`, `no_fax`) VALUES
+('S00001', 'Supplier 1', 'Jl. Semampir Tengah ', 'K00001', 'W00002', '089605267067', '');
 
 -- --------------------------------------------------------
 
@@ -235,7 +289,9 @@ CREATE TABLE `wilayah` (
 --
 
 INSERT INTO `wilayah` (`kode_wilayah`, `nama`) VALUES
-('W00001', 'jawa timur');
+('W00001', 'Jawa Barat'),
+('W00002', 'Jawa Tengah'),
+('W00003', 'Jawa Timur');
 
 --
 -- Indexes for dumped tables

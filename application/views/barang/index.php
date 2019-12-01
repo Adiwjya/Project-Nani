@@ -385,7 +385,7 @@
             </div>
             <div class="modal-body">
                 <form action="#" id="form2" class="form-horizontal">
-                    <input type="text" name="id_kat">
+                    <input type="hidden" name="id_kat">
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label" style="text-align: right;">Nama Kategori</label>
                         <div class="col-sm-9">
