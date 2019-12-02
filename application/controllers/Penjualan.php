@@ -24,7 +24,8 @@ class Penjualan extends CI_Controller{
             $session_data = $this->session->userdata('logged_in');
             $data['email'] = $session_data['email'];
             $data['akses'] = $session_data['akses'];
-            $data['nama'] = $session_data['nama'];         
+            $data['nama'] = $session_data['nama'];      
+               
             
             $this->load->view('head', $data);
             $this->load->view('menu');
@@ -43,9 +44,10 @@ class Penjualan extends CI_Controller{
                 $val = array();
                 $val[] = $row->idpj;
                 $val[] = $row->tanggal;
-                $val[] = $row->customer;
-                $val[] = $row->kota;
-                $val[] = $row->wilayah;
+                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM customer where kode_customer = '".$row->customer."';")->nama;
+                
+                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM kota where kode_kota = '".$row->kota."';")->nama;
+                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM wilayah where kode_wilayah = '".$row->wilayah."';")->nama;
                 $val[] = $row->alamat;
                 $str = '<table class="table table-hover mb-0 ps-container ps-theme-default">
                             <thead>
@@ -87,6 +89,14 @@ class Penjualan extends CI_Controller{
             $data['email'] = $session_data['email'];
             $data['akses'] = $session_data['akses'];
             $data['nama'] = $session_data['nama'];   
+            $data['kotaq'] = $this->Mglobals->getAll("kota");
+            $data['wilayahq'] = $this->Mglobals->getAll("wilayah");
+            $data['customerq'] = $this->Mglobals->getAll("customer");
+            $data['salesq'] = $this->Mglobals->getAll("sales");
+
+            $data['satts'] = 1;
+
+                        
 
             $kode_enkrip = $this->uri->segment(3);
             if(strlen($kode_enkrip) > 0){
@@ -95,11 +105,11 @@ class Penjualan extends CI_Controller{
                 if($jml_kode > 0){
                     $data['kode'] = $kode_dekrip;
                     $data['tanggal'] = $this->Mglobals->getAllQR("SELECT tanggal FROM penjualan where idpj = '".$kode_dekrip."';")->tanggal;
-                    $data['sales'] = $this->Mglobals->getAllQR("SELECT sales FROM penjualan where idpj = '".$kode_dekrip."';")->sales;
-                    $data['kota'] = $this->Mglobals->getAllQR("SELECT kota FROM penjualan where idpj = '".$kode_dekrip."';")->kota;
-                    $data['wilayah'] = $this->Mglobals->getAllQR("SELECT wilayah FROM penjualan where idpj = '".$kode_dekrip."';")->wilayah;
+                    $data['sales'] = $this->Mglobals->getAllQR("SELECT a.nama_sales FROM sales a join penjualan b where a.kode_sales=b.sales and b.idpj = '".$kode_dekrip."';")->nama_sales;
+                    $data['kota'] = $this->Mglobals->getAllQR("SELECT a.nama FROM kota a join penjualan b where a.kode_kota=b.kota and b.idpj = '".$kode_dekrip."';")->nama;
+                    $data['wilayah'] = $this->Mglobals->getAllQR("SELECT a.nama FROM wilayah a join penjualan b where a.kode_wilayah=b.wilayah and b.idpj = '".$kode_dekrip."';")->nama;
                     $data['alamat'] = $this->Mglobals->getAllQR("SELECT alamat FROM penjualan where idpj = '".$kode_dekrip."';")->alamat;
-                    $data['customer'] = $this->Mglobals->getAllQR("SELECT customer FROM penjualan where idpj = '".$kode_dekrip."';")->customer;
+                    $data['customer'] = $this->Mglobals->getAllQR("SELECT a.nama FROM customer a join penjualan b where a.kode_customer=b.customer and b.idpj = '".$kode_dekrip."';")->nama;
                     $data['subtotal'] = $this->Mglobals->getAllQR("SELECT subtotal FROM penjualan where idpj = '".$kode_dekrip."';")->subtotal;
                 }else{
                     $this->modul->halaman('penjualan');

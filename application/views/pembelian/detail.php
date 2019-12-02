@@ -210,7 +210,22 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label" style="text-align: right;">Kota</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" placeholder="Kota" name="kota" id="kota" value="<?php echo $kota; ?>">
+                                                <select class="form-control" id="kota" name="kota">
+                                                    <?php
+                                                    foreach ($kotaq->result() as $row) {
+
+                                                        if ($row->nama == $kota) {
+                                                            ?>
+                                                            <option value="<?php echo $row->kode_kota; ?>" selected><?php echo $row->nama; ?></option>
+                                                            <?php
+                                                        }else{
+                                                            ?>
+                                                            <option value="<?php echo $row->kode_kota; ?>"><?php echo $row->nama; ?></option>
+                                                            <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -218,7 +233,22 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label" style="text-align: right;">Wilayah</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" placeholder="Wilayah" name="wilayah" id="wilayah" value="<?php echo $wilayah; ?>" >
+                                                <select class="form-control" id="wilayah" name="wilayah">
+                                                    <?php
+                                                    foreach ($wilayahq->result() as $row) {
+
+                                                        if ($row->nama == $wilayah) {
+                                                            ?>
+                                                            <option value="<?php echo $row->kode_wilayah; ?>" selected><?php echo $row->nama; ?></option>
+                                                            <?php
+                                                        }else{
+                                                            ?>
+                                                            <option value="<?php echo $row->kode_wilayah; ?>"><?php echo $row->nama; ?></option>
+                                                            <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
                                                 </div>
                                             </div>
                                         </div>
