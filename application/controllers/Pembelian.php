@@ -44,29 +44,8 @@ class Pembelian extends CI_Controller{
                 $val = array();
                 $val[] = $row->idpb;
                 $val[] = $row->tanggal;
-                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM kota where kode_kota = '".$row->kota."';")->nama;
-                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM wilayah where kode_wilayah = '".$row->wilayah."';")->nama;
                 $val[] = $row->alamat;
-                $str = '<table class="table table-hover mb-0 ps-container ps-theme-default">
-                            <thead>
-                                <tr>
-                                    <th>Nama</th>
-                                    <th>Ukuran</th>
-                                    <th>Jumlah</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
-                $list1 = $this->Mglobals->getAllQ("SELECT * FROM pembelian_detail where idpb = '".$row->idpb."';");
-                foreach ($list1->result() as $row1) {
-                    $barang = $this->Mglobals->getAllQR("select nama from barang where idbarang = '".$row1->kode_barang."';");
-                    $str .= '<tr>';
-                    $str .= '<td>'.$barang->nama.'</td>';
-                    $str .= '<td>'.$row1->harga.'</td>';
-                    $str .= '<td>'.$row1->jumlah.'</td>';
-                    $str .= '</tr>';
-                }
-                $str .= '</tbody></table>';
-                $val[] = $str;
+                $val[] = $row->keterangan;
                 $val[] = '<div style="text-align: center;">'
                         . '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="ganti('."'".$this->modul->enkrip_url($row->idpb)."'".')"><i class="ft-edit"></i> Edit</a>&nbsp;'
                         . '<a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="hapus('."'".$row->idpb."'".')"><i class="ft-delete"></i> Delete</a>'
@@ -318,4 +297,38 @@ class Pembelian extends CI_Controller{
             $this->modul->halaman('login');
         }
     }
+
+    public function hitung(){
+
+        if($this->session->userdata('logged_in')){
+            $kode = $this->uri->segment(3);
+            $subtotal = 0;
+            $total = 0;
+            $list = $this->Mglobals->getAllQ("SELECT * from pembelian_detail where idpb = '".$kode."';");
+            foreach ($list->result() as $row) {
+
+                $total = $row->harga * $row ->jumlah;
+                $subtotal = $subtotal + $total;
+
+            }
+
+            $data = array(
+                'subtotal' => $subtotal
+            );
+            $condition['idpj'] = $kode;
+            $update = $this->Mglobals->update("penjualan",$data, $condition);
+            if($update == 1){
+                $status = "Data terupdate";
+            }else{
+                $status = "Data gagal terupdate";
+            }
+            
+            echo json_encode(array("status" => $subtotal));
+        }else{
+            $this->modul->halaman('login');
+        }
+
+    }
+
+
 }

@@ -318,13 +318,13 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label" style="text-align: right;">Saldo_awal</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="saldo_awal" placeholder="Saldo Awal">
+                            <input type="text" class="form-control" name="saldo_awal" placeholder="Saldo Awal" onkeypress="return hanyaAngka(event,false);" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label" style="text-align: right;">Saldo_akhir</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="saldo_akhir" placeholder="Saldo Akhir">
+                            <input type="text" class="form-control" name="saldo_akhir" placeholder="Saldo Akhir" onkeypress="return hanyaAngka(event,false);" autocomplete="off">
                         </div>
                     </div>
                 </form>

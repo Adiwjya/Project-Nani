@@ -52,6 +52,7 @@ class Customer extends CI_Controller{
                 $val[] = $row->no_fax;
                 // $val[] = $this->Mglobals->getAllQR("SELECT nama_kategori FROM kategori where idkategori = '".$row->idkategori."';")->nama_kategori;
                 $val[] = '<div style="text-align: center;">'
+                .'<a class="btn btn-sm  btn-success" href="javascript:void(0)" title="Hapus" onclick="hapus('."'".$row->kode_customer."'".','."'".$row->nama."'".')"><i class="ft-delete"></i> Delete</a>&nbsp;'
                         . '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="ganti('."'".$row->kode_customer."'".')"><i class="ft-edit"></i> Edit</a>&nbsp;'
                         . '<a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="hapus('."'".$row->kode_customer."'".','."'".$row->nama."'".')"><i class="ft-delete"></i> Delete</a>'
                         . '</div>';

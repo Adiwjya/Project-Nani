@@ -45,30 +45,9 @@ class Penjualan extends CI_Controller{
                 $val[] = $row->idpj;
                 $val[] = $row->tanggal;
                 $val[] = $this->Mglobals->getAllQR("SELECT nama FROM customer where kode_customer = '".$row->customer."';")->nama;
-                
-                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM kota where kode_kota = '".$row->kota."';")->nama;
-                $val[] = $this->Mglobals->getAllQR("SELECT nama FROM wilayah where kode_wilayah = '".$row->wilayah."';")->nama;
+                $val[] = $row->sales;
                 $val[] = $row->alamat;
-                $str = '<table class="table table-hover mb-0 ps-container ps-theme-default">
-                            <thead>
-                                <tr>
-                                    <th>Nama</th>
-                                    <th>Ukuran</th>
-                                    <th>Jumlah</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
-                $list1 = $this->Mglobals->getAllQ("SELECT * FROM penjualan_detail where idpj = '".$row->idpj."';");
-                foreach ($list1->result() as $row1) {
-                    $barang = $this->Mglobals->getAllQR("select nama from barang where idbarang = '".$row1->kode_barang."';");
-                    $str .= '<tr>';
-                    $str .= '<td>'.$barang->nama.'</td>';
-                    $str .= '<td>'.$row1->harga.'</td>';
-                    $str .= '<td>'.$row1->jumlah.'</td>';
-                    $str .= '</tr>';
-                }
-                $str .= '</tbody></table>';
-                $val[] = $str;
+                $val[] = $row->subtotal;
                 $val[] = '<div style="text-align: center;">'
                         . '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="ganti('."'".$this->modul->enkrip_url($row->idpj)."'".')"><i class="ft-edit"></i> Edit</a>&nbsp;'
                         . '<a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="hapus('."'".$row->idpj."'".')"><i class="ft-delete"></i> Delete</a>'
@@ -137,18 +116,23 @@ class Penjualan extends CI_Controller{
     public function ajax_add() {
         if($this->session->userdata('logged_in')){
             $cek = $this->Mglobals->getAllQR("select count(*) as jml from penjualan where idpj = '".$this->input->post('idpj')."';")->jml;
-            $jml = $this->Mglobals->getAllQR("select jumlah from pembelian_detail where kode_barang = '".$this->input->post('kode_barang')."';")->jumlah;
+            $jml = $this->input->post('stok');
             if($cek > 0){
                 
                 if($jml >= $this->input->post('jumlah')){
                     $status = $this->simpandetil();
+                    // $status = "LHOOO";
+                    
                 }else{
+                    // $status = "LHaaa";
                     $status = "Jumlah melebihi Stok yang tersedia";
                 }
             }else{
                 if($jml >= $this->input->post('jumlah')){
                     $status = $this->simpanhead_detil();
+                    // $status = "LHoii";
                 }else{
+                    // $status = "LHasdasd";
                     $status = "Jumlah melebihi Stok yang tersedia";
                 }
             }
@@ -238,17 +222,26 @@ class Penjualan extends CI_Controller{
     
     public function ajax_edit() {
         if($this->session->userdata('logged_in')){
-            $data = array(
-                'kode_barang' => $this->input->post('kode_barang'),
-                'jumlah' => $this->input->post('jumlah')
-            );
-            $condition['idpj_detail'] = $this->input->post('idpj_detail');
-            $update = $this->Mglobals->update("penjualan_detail",$data, $condition);
-            if($update == 1){
-                $status = "Data terupdate";
+            $jml = $this->input->post('stok');
+            
+            if($jml >= $this->input->post('jumlah')){
+                $data = array(
+                    'kode_barang' => $this->input->post('kode_barang'),
+                    'jumlah' => $this->input->post('jumlah')
+                );
+                $condition['idpj_detail'] = $this->input->post('idpj_detail');
+                $update = $this->Mglobals->update("penjualan_detail",$data, $condition);
+                if($update == 1){
+                    $status = "Data terupdate";
+                }else{
+                    $status = "Data gagal terupdate";
+                }
             }else{
-                $status = "Data gagal terupdate";
+                // $status = "LHaaa";
+                $status = "Jumlah melebihi Stok yang tersedia";
             }
+
+            
             echo json_encode(array("status" => $status));
         }else{
             $this->modul->halaman('login');
@@ -350,4 +343,37 @@ class Penjualan extends CI_Controller{
             $this->modul->halaman('login');
         }
     }
+
+    public function hitung(){
+
+        if($this->session->userdata('logged_in')){
+            $kode = $this->uri->segment(3);
+            $subtotal = 0;
+            $total = 0;
+            $list = $this->Mglobals->getAllQ("SELECT * from penjualan_detail where idpj = '".$kode."';");
+            foreach ($list->result() as $row) {
+
+                $total = $row->harga * $row ->jumlah;
+                $subtotal = $subtotal + $total;
+
+            }
+
+            $data = array(
+                'subtotal' => $subtotal
+            );
+            $condition['idpj'] = $kode;
+            $update = $this->Mglobals->update("penjualan",$data, $condition);
+            if($update == 1){
+                $status = "Data terupdate";
+            }else{
+                $status = "Data gagal terupdate";
+            }
+            
+            echo json_encode(array("status" => $subtotal));
+        }else{
+            $this->modul->halaman('login');
+        }
+
+    }
+
 }

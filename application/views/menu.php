@@ -40,7 +40,7 @@
               </li>
               <li class="nav-item">
               <a href="<?php echo base_url(); ?>supplier" class="nav-link">
-                  <p>Suppliyer</p>
+                  <p>Supplier</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -81,6 +81,16 @@
               <li class="nav-item">
                 <a href="<?php echo base_url(); ?>penjualan" class="nav-link">
                   <p>Penjualan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url(); ?>pembelian/detail" class="nav-link">
+                  <p>Pembelian Proses</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url(); ?>penjualan/detail" class="nav-link">
+                  <p>Penjualan Proses</p>
                 </a>
               </li>
             </ul>

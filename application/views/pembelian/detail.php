@@ -92,6 +92,21 @@
                 type: 'POST',
                 success: function (response) {
                     alert(response.status);
+
+                    $.ajax({
+                            url : "<?php echo base_url(); ?>pembelian/hitung/" + kode_trans,
+                            type: "GET",
+                            dataType: "JSON",
+                            success: function(data){
+                                $('[name="subtotal"]').val(data.status);
+                                
+                            },
+                            error: function (jqXHR, textStatus, errorThrown){
+                                alert('Error get data');
+                            }
+                     });
+
+
                     reload();
 
                     $('#btnSave').text('Save'); //change button text

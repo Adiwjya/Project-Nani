@@ -130,6 +130,7 @@
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <button class="btn btn-md btn-primary" onclick="add();"> Tambah Customer</button>
                                     <button class="btn btn-md btn-default" onclick="reload();"> Reload</button>
+                                   
                                 </div>
                                 <div class="clearfix"></div><br>
                                 <div class="table-responsive">

@@ -72,7 +72,7 @@
                         <div class="card-content">
                             <div class="card-body">
                                 <div class="col-md-12 col-xs-12 col-sm-12">
-                                    <button class="btn btn-md btn-primary" onclick="add();"><i class="ft-plus"></i> Penjualan</button>
+                                    
                                     <button class="btn btn-md btn-default" onclick="reload();"><i class="ft-repeat"></i> Reload</button>
                                 </div>
                                 <div class="clearfix"></div><br>
@@ -80,13 +80,13 @@
                                     <table id="tb" class="table table-hover mb-0 ps-container ps-theme-default">
                                         <thead>
                                             <tr>
-                                                <th>ID Penjualan</th>
+                                                <th>Nota Penjualan</th>
                                                 <th>Tanggal</th>
                                                 <th>Customer</th>
-                                                <th>Kota</th>
-                                                <th>Wilayah</th>
+                                                <th>Sales</th>
                                                 <th>Alamat</th>
-                                                <th style="text-align: center;">Detil</th>
+                                                <th>Subtotal</th>
+                                                
                                                 <th style="text-align: center;">Aksi</th>
                                             </tr>
                                         </thead>

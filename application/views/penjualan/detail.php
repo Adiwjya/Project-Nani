@@ -62,6 +62,7 @@
             var wilayah = document.getElementById('wilayah').value;
             var subtotal = document.getElementById('subtotal').value;
             var customer = document.getElementById('customer').value;
+            var stok = document.getElementById('stok').value;
             var alamat = document.getElementById('alamat').value;
 
             var kode_barang = document.getElementById('kode_barang').value;
@@ -77,6 +78,7 @@
             form_data.append('kota', kota);
             form_data.append('wilayah', wilayah);
             form_data.append('customer', customer);
+            form_data.append('stok', stok);
             form_data.append('alamat', alamat);
             form_data.append('subtotal', subtotal);
             
@@ -84,6 +86,7 @@
             form_data.append('jumlah', jumlah);
             form_data.append('harga', harga);
             form_data.append('idpj_detail', kode_detail);
+            // alert(kode_detail);
 
             
 
@@ -97,6 +100,21 @@
                 type: 'POST',
                 success: function (response) {
                     alert(response.status);
+
+                    $.ajax({
+                            url : "<?php echo base_url(); ?>penjualan/hitung/" + kode_trans,
+                            type: "GET",
+                            dataType: "JSON",
+                            success: function(data){
+                                $('[name="subtotal"]').val(data.status);
+                                
+                            },
+                            error: function (jqXHR, textStatus, errorThrown){
+                                alert('Error get data');
+                            }
+                     });
+
+
                     reload();
 
                     $('#btnSave').text('Save'); //change button text
@@ -141,12 +159,24 @@
             type: "GET",
             dataType: "JSON",
             success: function(data){
-                $('[name="id"]').val(data.idpb_detail);
+                $('[name="id"]').val(data.idpj_detail);
                 $('[name="kode_barang"]').val(data.kode_barang);
                 $('[name="nama_barang"]').val(data.nama);
                 $('[name="merk"]').val(data.merk);
                 $('[name="harga"]').val(data.harga);
                 $('[name="jumlah"]').val(data.jumlah);
+
+                $.ajax({
+                    url : "<?php echo base_url(); ?>penjualan/getStok/" + data.kode_barang,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function(data){
+                        $('[name="stok"]').val(data.status);
+                    },error: function (jqXHR, textStatus, errorThrown){
+                        alert('Error get data stok');
+                    }
+                });
+
             },
             error: function (jqXHR, textStatus, errorThrown){
                 alert('Error get data');
@@ -186,6 +216,7 @@
 
         $('#modal_barang').modal('hide');
     }
+
     
 </script>
 
@@ -421,7 +452,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label" style="text-align: right;">Harga</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control"  id="harga"name="harga" placeholder="harga" readonly="">
+                            <input type="text" onkeypress="return hanyaAngka(event,false);" class="form-control"  id="harga"name="harga" placeholder="harga"  pattern="[0-9]">
                         </div>
                     </div>
                     <div class="form-group row">
