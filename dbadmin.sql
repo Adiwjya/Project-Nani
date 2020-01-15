@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2019 at 01:15 PM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.3.2
+-- Generation Time: Jan 15, 2020 at 03:35 PM
+-- Server version: 10.4.8-MariaDB
+-- PHP Version: 7.1.32
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -68,8 +68,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`kode_customer`, `nama`, `alamat`, `kode_kota`, `kode_wilayah`, `no_tlp`, `no_fax`) VALUES
-('C00001', 'Viktor', '', 'K00007', 'W00003', '', ''),
-('C00002', 'Andre', '', 'K00003', 'W00001', '', '');
+('C00001', 'Adi', 'semampir', 'K00001', 'W00003', '123', '123123'),
+('C00002', 'Noel', 'Semampir 2', 'K00001', 'W00003', '2234', '234234');
 
 -- --------------------------------------------------------
 
@@ -109,12 +109,7 @@ CREATE TABLE `kota` (
 
 INSERT INTO `kota` (`kode_kota`, `nama`) VALUES
 ('K00001', 'Surabaya'),
-('K00002', 'Malang'),
-('K00003', 'Jakarta'),
-('K00004', 'Denpasar'),
-('K00005', 'Medan'),
-('K00006', 'Gersik'),
-('K00007', 'Sidoarjo');
+('K00002', 'Mojokerto');
 
 -- --------------------------------------------------------
 
@@ -137,7 +132,8 @@ CREATE TABLE `pembelian` (
 --
 
 INSERT INTO `pembelian` (`idpb`, `tanggal`, `kota`, `wilayah`, `alamat`, `keterangan`, `subtotal`) VALUES
-('M00001', '2019-12-01', 'Surabaya', 'Jawa Timur', 'Jl. Semampir Tengah VIIIA', 'Ditunggu secepatnya', 0);
+('M00001', '2019-12-03', 'K00001', 'W00001', 'aw', '', 0),
+('M00002', '2019-12-20', 'K00001', 'W00001', 'aw', 'apa aja', 0);
 
 -- --------------------------------------------------------
 
@@ -158,8 +154,8 @@ CREATE TABLE `pembelian_detail` (
 --
 
 INSERT INTO `pembelian_detail` (`idpb_detail`, `kode_barang`, `harga`, `jumlah`, `idpb`) VALUES
-('D000001', 'B00001', 1000, 2, 'M00001'),
-('D000002', 'B00003', 1300, 1, 'M00001');
+('D000001', 'B00001', 1000, 12, 'M00001'),
+('D000002', 'B00001', 1000, 1, 'M00002');
 
 -- --------------------------------------------------------
 
@@ -183,7 +179,8 @@ CREATE TABLE `penjualan` (
 --
 
 INSERT INTO `penjualan` (`idpj`, `tanggal`, `sales`, `customer`, `kota`, `wilayah`, `alamat`, `subtotal`) VALUES
-('U00001', '2019-12-01', 'enrico', 'adiw', 'Surabaya', 'Jawa Timur ', 'Jl. Kedung Baruk ', 0);
+('U00001', '2019-12-04', 'SA0001', 'C00001', 'K00001', 'W00001', 'aw', 2000),
+('U00002', '2019-12-17', 'SA0001', 'C00001', 'K00001', 'W00001', 'awaw', 3000);
 
 -- --------------------------------------------------------
 
@@ -204,7 +201,8 @@ CREATE TABLE `penjualan_detail` (
 --
 
 INSERT INTO `penjualan_detail` (`idpj_detail`, `kode_barang`, `harga`, `jumlah`, `idpj`) VALUES
-('D000001', 'B00001', 1000, 1, 'U00001');
+('D000001', 'B00001', 1000, 2, 'U00001'),
+('D000002', 'B00001', 1000, 3, 'U00002');
 
 -- --------------------------------------------------------
 
@@ -225,7 +223,8 @@ CREATE TABLE `sales` (
 --
 
 INSERT INTO `sales` (`kode_sales`, `nama_sales`, `alamat`, `kode_kota`, `no_tlp`) VALUES
-('SA0001', 'Enrico ', '', 'K00001', '089777666555');
+('SA0001', 'asd', 'asdasd', 'K00002', 'asd'),
+('SA0002', 'qwe', 'qwe', 'K00001', '123');
 
 -- --------------------------------------------------------
 
@@ -242,13 +241,6 @@ CREATE TABLE `supplier1` (
   `no_tlp` varchar(12) NOT NULL,
   `no_fax` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `supplier1`
---
-
-INSERT INTO `supplier1` (`kode_supplier`, `nama`, `alamat`, `kode_kota`, `kode_wilayah`, `no_tlp`, `no_fax`) VALUES
-('S00001', 'Supplier 1', 'Jl. Semampir Tengah ', 'K00001', 'W00002', '089605267067', '');
 
 -- --------------------------------------------------------
 
@@ -328,7 +320,9 @@ ALTER TABLE `kota`
 -- Indexes for table `pembelian`
 --
 ALTER TABLE `pembelian`
-  ADD PRIMARY KEY (`idpb`);
+  ADD PRIMARY KEY (`idpb`),
+  ADD KEY `FK_kode_kotapb_kota` (`kota`),
+  ADD KEY `FK_kode_kotapb_wilayah` (`wilayah`);
 
 --
 -- Indexes for table `pembelian_detail`
@@ -342,7 +336,11 @@ ALTER TABLE `pembelian_detail`
 -- Indexes for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  ADD PRIMARY KEY (`idpj`);
+  ADD PRIMARY KEY (`idpj`),
+  ADD KEY `FK_kode_kotapj_kota` (`kota`),
+  ADD KEY `FK_kode_kotapj_wilayah` (`wilayah`),
+  ADD KEY `FK_kode_customerpj_customer` (`customer`),
+  ADD KEY `FK_kode_salespj_sales` (`sales`);
 
 --
 -- Indexes for table `penjualan_detail`
@@ -397,11 +395,27 @@ ALTER TABLE `customer`
   ADD CONSTRAINT `FK_kode_wilayah_wilayah` FOREIGN KEY (`kode_wilayah`) REFERENCES `wilayah` (`kode_wilayah`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `pembelian`
+--
+ALTER TABLE `pembelian`
+  ADD CONSTRAINT `FK_kode_kotapb_kota` FOREIGN KEY (`kota`) REFERENCES `kota` (`kode_kota`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_kode_kotapb_wilayah` FOREIGN KEY (`wilayah`) REFERENCES `wilayah` (`kode_wilayah`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `pembelian_detail`
 --
 ALTER TABLE `pembelian_detail`
   ADD CONSTRAINT `FK_idpb_pembelian` FOREIGN KEY (`idpb`) REFERENCES `pembelian` (`idpb`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_kode_barang_barang` FOREIGN KEY (`kode_barang`) REFERENCES `barang` (`idbarang`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `penjualan`
+--
+ALTER TABLE `penjualan`
+  ADD CONSTRAINT `FK_kode_customerpj_customer` FOREIGN KEY (`customer`) REFERENCES `customer` (`kode_customer`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_kode_kotapj_kota` FOREIGN KEY (`kota`) REFERENCES `kota` (`kode_kota`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_kode_kotapj_wilayah` FOREIGN KEY (`wilayah`) REFERENCES `wilayah` (`kode_wilayah`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_kode_salespj_sales` FOREIGN KEY (`sales`) REFERENCES `sales` (`kode_sales`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `penjualan_detail`
