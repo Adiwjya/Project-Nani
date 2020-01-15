@@ -315,8 +315,8 @@ class Pembelian extends CI_Controller{
             $data = array(
                 'subtotal' => $subtotal
             );
-            $condition['idpj'] = $kode;
-            $update = $this->Mglobals->update("penjualan",$data, $condition);
+            $condition['idpb'] = $kode;
+            $update = $this->Mglobals->update("pembelian",$data, $condition);
             if($update == 1){
                 $status = "Data terupdate";
             }else{
@@ -329,6 +329,5 @@ class Pembelian extends CI_Controller{
         }
 
     }
-
 
 }
