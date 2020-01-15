@@ -45,6 +45,10 @@
     function ganti(id){
         window.location.href = "<?php echo base_url(); ?>penjualan/detail/"+id;
     }
+
+    function bayar(id){
+        window.location.href = "<?php echo base_url(); ?>penjualan/pembayaran/"+id;
+    }
     
 </script>
 

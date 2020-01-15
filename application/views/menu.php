@@ -75,22 +75,22 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="<?php echo base_url(); ?>pembelian" class="nav-link">
-                  <p>Pembelian</p>
+                  <p>Pembelian Global</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?php echo base_url(); ?>penjualan" class="nav-link">
-                  <p>Penjualan</p>
+                  <p>Penjualan Global</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?php echo base_url(); ?>pembelian/detail" class="nav-link">
-                  <p>Pembelian Proses</p>
+                  <p>Tambah Pembelian</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?php echo base_url(); ?>penjualan/detail" class="nav-link">
-                  <p>Penjualan Proses</p>
+                  <p>Tambah Penjualan</p>
                 </a>
               </li>
             </ul>
