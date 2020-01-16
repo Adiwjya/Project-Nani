@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 15, 2020 at 03:35 PM
--- Server version: 10.4.8-MariaDB
--- PHP Version: 7.1.32
+-- Generation Time: Jan 16, 2020 at 12:08 PM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -114,6 +114,58 @@ INSERT INTO `kota` (`kode_kota`, `nama`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `lunas`
+--
+
+CREATE TABLE `lunas` (
+  `idl` varchar(10) NOT NULL,
+  `idpj` varchar(10) NOT NULL,
+  `tanggal` date NOT NULL,
+  `sales` varchar(50) NOT NULL,
+  `customer` varchar(50) NOT NULL,
+  `kota` varchar(50) NOT NULL,
+  `wilayah` varchar(50) NOT NULL,
+  `alamat` varchar(50) NOT NULL,
+  `subtotal` float NOT NULL,
+  `diskon` float NOT NULL,
+  `ppn` float NOT NULL,
+  `total_akhir` float NOT NULL,
+  `kembalian` float NOT NULL,
+  `jumlah_bayar` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `lunas`
+--
+
+INSERT INTO `lunas` (`idl`, `idpj`, `tanggal`, `sales`, `customer`, `kota`, `wilayah`, `alamat`, `subtotal`, `diskon`, `ppn`, `total_akhir`, `kembalian`, `jumlah_bayar`) VALUES
+('L000001', 'U00001', '2019-12-04', 'SA0001', 'C00001', 'K00001', 'W00001', 'aw', 25600, 0, 0, 25600, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lunas_detail`
+--
+
+CREATE TABLE `lunas_detail` (
+  `idl_detail` varchar(10) NOT NULL,
+  `kode_barang` varchar(10) NOT NULL,
+  `harga` float NOT NULL,
+  `jumlah` float NOT NULL,
+  `idl` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `lunas_detail`
+--
+
+INSERT INTO `lunas_detail` (`idl_detail`, `kode_barang`, `harga`, `jumlah`, `idl`) VALUES
+('LD00001', 'B00001', 1000, 3, 'L000001'),
+('LD00002', 'B00002', 2000, 10, 'L000001');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pembelian`
 --
 
@@ -154,8 +206,10 @@ CREATE TABLE `pembelian_detail` (
 --
 
 INSERT INTO `pembelian_detail` (`idpb_detail`, `kode_barang`, `harga`, `jumlah`, `idpb`) VALUES
-('D000001', 'B00001', 1000, 12, 'M00001'),
-('D000002', 'B00001', 1000, 1, 'M00002');
+('D000001', 'B00001', 1000, 20, 'M00001'),
+('D000002', 'B00001', 1000, 1, 'M00002'),
+('D000003', 'B00002', 2000, 20, 'M00002'),
+('D000004', 'B00003', 1300, 10, 'M00001');
 
 -- --------------------------------------------------------
 
@@ -179,8 +233,9 @@ CREATE TABLE `penjualan` (
 --
 
 INSERT INTO `penjualan` (`idpj`, `tanggal`, `sales`, `customer`, `kota`, `wilayah`, `alamat`, `subtotal`) VALUES
-('U00001', '2019-12-04', 'SA0001', 'C00001', 'K00001', 'W00001', 'aw', 2000),
-('U00002', '2019-12-17', 'SA0001', 'C00001', 'K00001', 'W00001', 'awaw', 3000);
+('U00001', '2019-12-04', 'SA0001', 'C00001', 'K00001', 'W00001', 'aw', 23000),
+('U00002', '2019-12-17', 'SA0001', 'C00001', 'K00001', 'W00001', 'awaw', 3000),
+('U00003', '2020-01-15', 'SA0002', 'C00002', 'K00002', 'W00002', 'test', 2000);
 
 -- --------------------------------------------------------
 
@@ -201,8 +256,10 @@ CREATE TABLE `penjualan_detail` (
 --
 
 INSERT INTO `penjualan_detail` (`idpj_detail`, `kode_barang`, `harga`, `jumlah`, `idpj`) VALUES
-('D000001', 'B00001', 1000, 2, 'U00001'),
-('D000002', 'B00001', 1000, 3, 'U00002');
+('D000001', 'B00001', 1000, 3, 'U00001'),
+('D000002', 'B00001', 1000, 3, 'U00002'),
+('D000003', 'B00001', 1000, 2, 'U00003'),
+('D000004', 'B00002', 2000, 10, 'U00001');
 
 -- --------------------------------------------------------
 
@@ -317,6 +374,19 @@ ALTER TABLE `kota`
   ADD PRIMARY KEY (`kode_kota`);
 
 --
+-- Indexes for table `lunas`
+--
+ALTER TABLE `lunas`
+  ADD PRIMARY KEY (`idl`);
+
+--
+-- Indexes for table `lunas_detail`
+--
+ALTER TABLE `lunas_detail`
+  ADD PRIMARY KEY (`idl_detail`),
+  ADD KEY `FK_idlunas` (`idl`);
+
+--
 -- Indexes for table `pembelian`
 --
 ALTER TABLE `pembelian`
@@ -393,6 +463,12 @@ ALTER TABLE `barang`
 ALTER TABLE `customer`
   ADD CONSTRAINT `FK_kode_kota_kota` FOREIGN KEY (`kode_kota`) REFERENCES `kota` (`kode_kota`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_kode_wilayah_wilayah` FOREIGN KEY (`kode_wilayah`) REFERENCES `wilayah` (`kode_wilayah`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `lunas_detail`
+--
+ALTER TABLE `lunas_detail`
+  ADD CONSTRAINT `FK_idlunas` FOREIGN KEY (`idl`) REFERENCES `lunas` (`idl`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pembelian`
