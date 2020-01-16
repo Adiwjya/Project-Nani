@@ -248,6 +248,19 @@
         $('#modal_barang').modal('hide');
     }
 
+    function lunas(id){
+        $.ajax({
+                url : "<?php echo base_url(); ?>penjualan/hapus/" + id,
+                type: "POST",
+                dataType: "JSON",
+                success: function(data){
+                    window.location.href = "<?php echo base_url(); ?>penjualan";
+                },error: function (jqXHR, textStatus, errorThrown){
+                    alert('Error hapus data');
+                }
+            });
+    }
+
     
 </script>
 
@@ -451,22 +464,22 @@
                                 </div>
 
                                 <div class="row" style="padding:10pt">
-                                    <div class="col-2"> <input type="text" class="form-control" placeholder="Discount barang" id="diskon" value="0" onkeyup="hitungdc()"> </div> %
-                                    <div class="col-2"> <input type="text" class="form-control" placeholder="PPN" id="ppn" value="0" onkeyup="hitungdc()"> </div>%
+                                    <div class="col-2"> <input type="text" class="form-control" placeholder="Discount barang" id="diskon" value="<?php echo $diskon; ?>" onkeyup="hitungdc()"> </div> %
+                                    <div class="col-2"> <input type="text" class="form-control" placeholder="PPN" id="ppn" value="<?php echo $ppn; ?>" onkeyup="hitungdc()"> </div>%
 
                                 </div>
                                 
                                 <div class="col-md-6 col-xs-6 col-sm-6">
-                                    <input type="text" class="form-control" placeholder="Sub Total" id="totala" value="<?php echo $subtotal; ?>">
+                                    <input type="text" class="form-control" placeholder="Sub Total" id="totala" value="<?php echo $total_akhir; ?>">
                                 </div>
                                 
                                 <div class="col-md-6 col-xs-6 col-sm-6">
-                                    <input type="text" class="form-control" placeholder="Bayar" id="bayar" onkeyup="kembalian()">  
-                                    <input type="text" class="form-control" placeholder="Kembalian" id="kembali">
+                                    <input type="text" class="form-control" placeholder="Bayar" id="bayar" value="<?php echo $jumlah_bayar; ?>" onkeyup="kembalian()">  
+                                    <input type="text" class="form-control" placeholder="Kembalian" value="<?php echo $kembalian; ?>" id="kembali">
                                 </div>
 
-                                <button type="button" class="btn btn-success" onclick="save();">SIMPAN</button>
-                                <button type="button" class="btn btn-danger">LUNAS</button>
+                                <button type="button" class="btn btn-primary" onclick="save();">SIMPAN</button>
+                                <button type="button" class="btn btn-success" onclick="lunas('<?php echo $kode; ?>');" >LUNAS</button>
                         </div>
                     </div>
                 </div>

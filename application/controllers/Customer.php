@@ -52,7 +52,7 @@ class Customer extends CI_Controller{
                 $val[] = $row->no_fax;
                 // $val[] = $this->Mglobals->getAllQR("SELECT nama_kategori FROM kategori where idkategori = '".$row->idkategori."';")->nama_kategori;
                 $val[] = '<div style="text-align: center;">'
-                .'<a class="btn btn-sm  btn-success" href="javascript:void(0)" title="Hapus" onclick="hapus('."'".$row->kode_customer."'".','."'".$row->nama."'".')"><i class="ft-delete"></i> Delete</a>&nbsp;'
+                .'<a class="btn btn-sm  btn-success" href="javascript:void(0)" title="Hapus" onclick="history('."'".$row->kode_customer."'".','."'".$row->nama."'".')"><i class="ft-delete"></i> History</a>&nbsp;'
                         . '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="ganti('."'".$row->kode_customer."'".')"><i class="ft-edit"></i> Edit</a>&nbsp;'
                         . '<a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="hapus('."'".$row->kode_customer."'".','."'".$row->nama."'".')"><i class="ft-delete"></i> Delete</a>'
                         . '</div>';
@@ -137,6 +137,114 @@ class Customer extends CI_Controller{
                 $status = "Data gagal terhapus";
             }
             echo json_encode(array("status" => $status));
+        }else{
+            $this->modul->halaman('login');
+        }
+    }
+    public function hapus_history() {
+        if($this->session->userdata('logged_in')){
+            $kondisi['idl'] = $this->uri->segment(3);
+            $hapus = $this->Mglobals->delete("lunas",$kondisi);
+            if($hapus == 1){
+                $status = "Data terhapus";
+            }else{
+                $status = "Data gagal terhapus";
+            }
+            echo json_encode(array("status" => $status));
+        }else{
+            $this->modul->halaman('login');
+        }
+    }
+    
+    public function history() {
+        if($this->session->userdata('logged_in')){
+            $idnya = $this->uri->segment(3);
+            $session_data = $this->session->userdata('logged_in');
+            $data['email'] = $session_data['email'];
+            $data['akses'] = $session_data['akses'];
+            $data['nama'] = $session_data['nama'];
+            $data['kota'] = $this->Mglobals->getAll("kota");
+            $data['wilayah'] = $this->Mglobals->getAll("wilayah");
+            $data['history'] = $this->Mglobals->getAllQ("select * from lunas where customer = '".$idnya."';");
+            
+            
+            $this->load->view('head', $data);
+            $this->load->view('menu');
+            $this->load->view('customer/history');
+            $this->load->view('footer');
+
+        }else{
+            $this->modul->halaman('login');
+        }
+    }
+
+
+    public function history_detail() {
+        if($this->session->userdata('logged_in')){
+            $session_data = $this->session->userdata('logged_in');
+            $data['email'] = $session_data['email'];
+            $data['akses'] = $session_data['akses'];
+            $data['nama'] = $session_data['nama'];   
+            $data['kotaq'] = $this->Mglobals->getAll("kota");
+            $data['wilayahq'] = $this->Mglobals->getAll("wilayah");
+            $data['customerq'] = $this->Mglobals->getAll("customer");
+            $data['salesq'] = $this->Mglobals->getAll("sales");
+
+            $data['satts'] = 1;
+
+                        
+
+            $kode_dekrip = $this->uri->segment(3);
+                
+                    $data['kode'] = $kode_dekrip;
+                    $data['kode_lunas'] = $this->Mglobals->getAllQR("SELECT idl FROM lunas where idl = '".$kode_dekrip."';")->idl;
+                    $data['tanggal'] = $this->Mglobals->getAllQR("SELECT tanggal FROM lunas where idl = '".$kode_dekrip."';")->tanggal;
+                    $data['sales'] = $this->Mglobals->getAllQR("SELECT a.nama_sales FROM sales a join lunas b where a.kode_sales=b.sales and b.idl = '".$kode_dekrip."';")->nama_sales;
+                    $data['kota'] = $this->Mglobals->getAllQR("SELECT a.nama FROM kota a join lunas b where a.kode_kota=b.kota and b.idl = '".$kode_dekrip."';")->nama;
+                    $data['wilayah'] = $this->Mglobals->getAllQR("SELECT a.nama FROM wilayah a join lunas b where a.kode_wilayah=b.wilayah and b.idl = '".$kode_dekrip."';")->nama;
+                    $data['alamat'] = $this->Mglobals->getAllQR("SELECT alamat FROM lunas where idl = '".$kode_dekrip."';")->alamat;
+                    $data['customer'] = $this->Mglobals->getAllQR("SELECT a.nama FROM customer a join lunas b where a.kode_customer=b.customer and b.idl = '".$kode_dekrip."';")->nama;
+                    $data['subtotal'] = $this->Mglobals->getAllQR("SELECT subtotal FROM lunas where idl = '".$kode_dekrip."';")->subtotal;
+                    $data['diskon'] = $this->Mglobals->getAllQR("SELECT diskon FROM lunas where idl = '".$kode_dekrip."';")->diskon;
+                    $data['ppn'] = $this->Mglobals->getAllQR("SELECT ppn FROM lunas where idl = '".$kode_dekrip."';")->ppn;
+                    $data['total_akhir'] = $this->Mglobals->getAllQR("SELECT total_akhir FROM lunas where idl = '".$kode_dekrip."';")->total_akhir;
+                    $data['kembalian'] = $this->Mglobals->getAllQR("SELECT kembalian FROM lunas where idl = '".$kode_dekrip."';")->kembalian;
+                    $data['jumlah_bayar'] = $this->Mglobals->getAllQR("SELECT jumlah_bayar FROM lunas where idl = '".$kode_dekrip."';")->jumlah_bayar;
+                    $data['stat'] = $this->Mglobals->getAllQR("SELECT status as stat FROM lunas where idl = '".$kode_dekrip."';")->stat;
+
+            
+            $this->load->view('head', $data);
+            $this->load->view('menu');
+            $this->load->view('customer/history_detail');
+            $this->load->view('footer');
+        }else{
+            $this->modul->halaman('login');
+        }
+    }
+
+    public function ajax_list_detail_pembayaran() {
+        if($this->session->userdata('logged_in')){
+            $kode = $this->uri->segment(3);
+            $data = array();
+            $list = $this->Mglobals->getAllQ("SELECT * FROM lunas_detail where idl = '".$kode."';");
+            foreach ($list->result() as $row) {
+                $val = array();
+                // data barang
+                $barang = $this->Mglobals->getAllQR("select nama, merk, satuan from barang where idbarang = '".$row->kode_barang."';");
+                $val[] = $barang->nama;
+                $val[] = $barang->merk;
+                $val[] = $barang->satuan;
+                $val[] = $row->harga;
+                $val[] = $row->jumlah;
+                $val[] = '<div style="text-align: center;">'
+                        . '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="ganti('."'".$row->idl_detail."'".')"><i class="ft-edit"></i> Edit</a>&nbsp;'
+                        . '<a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="hapus('."'".$row->idl_detail."'".', '."'".$barang->nama."'".')"><i class="ft-delete"></i> Delete</a>'
+                        . '</div>';
+                
+                $data[] = $val;
+            }
+            $output = array("data" => $data);
+            echo json_encode($output);
         }else{
             $this->modul->halaman('login');
         }

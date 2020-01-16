@@ -105,6 +105,10 @@
             }
         });
     }
+
+    function history(id,nama){
+        window.location.href = "<?php echo base_url(); ?>customer/history/" + id;
+    }
     
 </script>
 <!-- Content Wrapper. Contains page content -->

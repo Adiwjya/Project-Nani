@@ -127,23 +127,60 @@ class Penjualan extends CI_Controller{
 
             $data['satts'] = 1;
 
-                        
-
+     
             $kode_enkrip = $this->uri->segment(3);
             if(strlen($kode_enkrip) > 0){
+ 
+                
                 $kode_dekrip = $this->modul->dekrip_url($kode_enkrip);
-                $jml_kode = $this->Mglobals->getAllQR("SELECT count(*) as jml FROM penjualan where idpj = '".$kode_dekrip."';")->jml;
-                if($jml_kode > 0){
-                    $data['kode'] = $kode_dekrip;
-                    $data['tanggal'] = $this->Mglobals->getAllQR("SELECT tanggal FROM penjualan where idpj = '".$kode_dekrip."';")->tanggal;
-                    $data['sales'] = $this->Mglobals->getAllQR("SELECT a.nama_sales FROM sales a join penjualan b where a.kode_sales=b.sales and b.idpj = '".$kode_dekrip."';")->nama_sales;
-                    $data['kota'] = $this->Mglobals->getAllQR("SELECT a.nama FROM kota a join penjualan b where a.kode_kota=b.kota and b.idpj = '".$kode_dekrip."';")->nama;
-                    $data['wilayah'] = $this->Mglobals->getAllQR("SELECT a.nama FROM wilayah a join penjualan b where a.kode_wilayah=b.wilayah and b.idpj = '".$kode_dekrip."';")->nama;
-                    $data['alamat'] = $this->Mglobals->getAllQR("SELECT alamat FROM penjualan where idpj = '".$kode_dekrip."';")->alamat;
-                    $data['customer'] = $this->Mglobals->getAllQR("SELECT a.nama FROM customer a join penjualan b where a.kode_customer=b.customer and b.idpj = '".$kode_dekrip."';")->nama;
-                    $data['subtotal'] = $this->Mglobals->getAllQR("SELECT subtotal FROM penjualan where idpj = '".$kode_dekrip."';")->subtotal;
-                }else{
-                    $this->modul->halaman('penjualan');
+                $cek = $this->Mglobals->getAllQR("SELECT count(*) as jml FROM lunas where idpj = '".$kode_dekrip."';")->jml;
+                if ($cek > 0) {
+                    
+                    $jml_kode = $this->Mglobals->getAllQR("SELECT count(*) as jml FROM lunas where idpj = '".$kode_dekrip."';")->jml;
+                    if($jml_kode > 0){
+                        $data['kode'] = $kode_dekrip;
+
+                        $data['kode_lunas'] = $this->Mglobals->getAllQR("SELECT idl FROM lunas where idpj = '".$kode_dekrip."';")->idl;
+
+                        $data['tanggal'] = $this->Mglobals->getAllQR("SELECT tanggal FROM lunas where idpj = '".$kode_dekrip."';")->tanggal;
+                        $data['sales'] = $this->Mglobals->getAllQR("SELECT a.nama_sales FROM sales a join lunas b where a.kode_sales=b.sales and b.idpj = '".$kode_dekrip."';")->nama_sales;
+                        $data['kota'] = $this->Mglobals->getAllQR("SELECT a.nama FROM kota a join lunas b where a.kode_kota=b.kota and b.idpj = '".$kode_dekrip."';")->nama;
+                        $data['wilayah'] = $this->Mglobals->getAllQR("SELECT a.nama FROM wilayah a join lunas b where a.kode_wilayah=b.wilayah and b.idpj = '".$kode_dekrip."';")->nama;
+                        $data['alamat'] = $this->Mglobals->getAllQR("SELECT alamat FROM lunas where idpj = '".$kode_dekrip."';")->alamat;
+                        $data['customer'] = $this->Mglobals->getAllQR("SELECT a.nama FROM customer a join lunas b where a.kode_customer=b.customer and b.idpj = '".$kode_dekrip."';")->nama;
+                        $data['subtotal'] = $this->Mglobals->getAllQR("SELECT subtotal FROM lunas where idpj = '".$kode_dekrip."';")->subtotal;
+                        $data['diskon'] = $this->Mglobals->getAllQR("SELECT diskon FROM lunas where idpj = '".$kode_dekrip."';")->diskon;
+                        $data['ppn'] = $this->Mglobals->getAllQR("SELECT ppn FROM lunas where idpj = '".$kode_dekrip."';")->ppn;
+                        $data['total_akhir'] = $this->Mglobals->getAllQR("SELECT total_akhir FROM lunas where idpj = '".$kode_dekrip."';")->total_akhir;
+                        $data['kembalian'] = $this->Mglobals->getAllQR("SELECT kembalian FROM lunas where idpj = '".$kode_dekrip."';")->kembalian;
+                        $data['jumlah_bayar'] = $this->Mglobals->getAllQR("SELECT jumlah_bayar FROM lunas where idpj = '".$kode_dekrip."';")->jumlah_bayar;
+                        $data['stat'] = $this->Mglobals->getAllQR("SELECT status as stat FROM lunas where idpj = '".$kode_dekrip."';")->stat;
+                    }else{
+                        $this->modul->halaman('penjualan');
+                    }
+                }else {
+                    $kode_dekrip = $this->modul->dekrip_url($kode_enkrip);
+                    $jml_kode = $this->Mglobals->getAllQR("SELECT count(*) as jml FROM penjualan where idpj = '".$kode_dekrip."';")->jml;
+                    if($jml_kode > 0){
+                        $data['kode'] = $kode_dekrip;
+                        $data['kode_lunas'] ="";
+                        $data['tanggal'] = $this->Mglobals->getAllQR("SELECT tanggal FROM penjualan where idpj = '".$kode_dekrip."';")->tanggal;
+                        $data['sales'] = $this->Mglobals->getAllQR("SELECT a.nama_sales FROM sales a join penjualan b where a.kode_sales=b.sales and b.idpj = '".$kode_dekrip."';")->nama_sales;
+                        $data['kota'] = $this->Mglobals->getAllQR("SELECT a.nama FROM kota a join penjualan b where a.kode_kota=b.kota and b.idpj = '".$kode_dekrip."';")->nama;
+                        $data['wilayah'] = $this->Mglobals->getAllQR("SELECT a.nama FROM wilayah a join penjualan b where a.kode_wilayah=b.wilayah and b.idpj = '".$kode_dekrip."';")->nama;
+                        $data['alamat'] = $this->Mglobals->getAllQR("SELECT alamat FROM penjualan where idpj = '".$kode_dekrip."';")->alamat;
+                        $data['customer'] = $this->Mglobals->getAllQR("SELECT a.nama FROM customer a join penjualan b where a.kode_customer=b.customer and b.idpj = '".$kode_dekrip."';")->nama;
+                        $data['subtotal'] = $this->Mglobals->getAllQR("SELECT subtotal FROM penjualan where idpj = '".$kode_dekrip."';")->subtotal;
+
+                        $data['diskon'] = 0;
+                        $data['ppn'] = 0;
+                        $data['total_akhir'] = $this->Mglobals->getAllQR("SELECT subtotal FROM penjualan where idpj = '".$kode_dekrip."';")->subtotal;
+                        $data['kembalian'] = "";
+                        $data['jumlah_bayar'] = "";
+
+                    }else{
+                        $this->modul->halaman('penjualan');
+                    }
                 }
             }else{
                 $data['kode'] = $this->modul->autokode1('U','idpj','penjualan','2','7');
@@ -154,6 +191,13 @@ class Penjualan extends CI_Controller{
                 $data['alamat'] = "";
                 $data['customer'] = "";
                 $data['subtotal'] = "";
+                
+
+                $data['diskon'] = 0;
+                $data['ppn'] = 0;
+                $data['total_akhir'] = "";
+                $data['kembalian'] = 0;
+                $data['jumlah_bayar'] = "";
             }
             
             $this->load->view('head', $data);
@@ -477,7 +521,8 @@ class Penjualan extends CI_Controller{
                 'ppn' => $this->input->post('ppn'),
                 'total_akhir' => $this->input->post('total_akhir'),
                 'kembalian' => $this->input->post('kembalian'),
-                'jumlah_bayar' => $this->input->post('jumlah_bayar')
+                'jumlah_bayar' => $this->input->post('jumlah_bayar'),
+                'status' => 1
 
             );
             $simpan = $this->Mglobals->add("lunas",$data);
